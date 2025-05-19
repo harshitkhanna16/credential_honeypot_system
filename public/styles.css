@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  color: #00ffcc;
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.terminal-box {
+  background-color: rgba(0, 0, 0, 0.85);
+  border: 2px solid #00ffcc;
+  padding: 2rem;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 0 15px #00ffcc;
+}
+
+input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  background: black;
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  font-family: inherit;
+}
+
+button {
+  padding: 10px 20px;
+  background: white;
+  color: black;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.success-body {
+  background-color: black;
+  color: #00ffcc;
+}
+
+.denied-body {
+  background-color: #0b0b0b;
+  color: #ff4444;
+}
+
+.red-glow {
+  border-color: red;
+  box-shadow: 0 0 15px red;
+}
+
+.green-glow {
+  border-color: #00ffcc;
+  box-shadow: 0 0 15px #00ffcc;
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}

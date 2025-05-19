@@ -2,6 +2,14 @@
 
 A security-focused honeypot system designed to simulate a login portal, capture unauthorized login attempts, log attacker information, and alert the administrator via email.
 
+## Workflow
+
+- A Login page.
+- If correct actual credentials ---> Go to Success Page.
+- If credentials are wrong 3 times ---> Redirect to Access Denied Page + log attacker details  and send Alert on Mail.
+-If login happens at odd hours (like after 12:00 AM or customizable hours) ---> Redirect to Access Denied Page + log attacker details  and send Alert on Mail.
+- If correct planted credentials ---> Redirect to Access Denied Page + log attacker details  and send Alert on Mail.
+
 ## Features
 - Fake login system with realistic UI
 - Tracks failed login attempts

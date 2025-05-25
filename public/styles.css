@@ -1,0 +1,336 @@
+/* MATRIX DIGITAL RAIN BACKGROUND ANIMATION */
+@keyframes digitalRain {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+/* BLINKING CURSOR */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* GLITCH FLICKER for neon text (green) */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 5px #00ff00,
+      0 0 10px #00ff00,
+      0 0 20px #00ff00,
+      0 0 30px #00ff00;
+  }
+  20%, 22%, 24%, 55% {
+    opacity: 0.6;
+    text-shadow: none;
+  }
+}
+
+/* GLITCH FLICKER for RED neon text */
+@keyframes flickerRed {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow:
+      0 0 5px #ff4444,
+      0 0 10px #ff4444,
+      0 0 20px #ff4444,
+      0 0 30px #ff4444;
+  }
+  20%, 22%, 24%, 55% {
+    opacity: 0.6;
+    text-shadow: none;
+  }
+}
+
+/* SIREN PULSE EFFECT for denied state */
+@keyframes sirenPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 15px #ff4444,
+      0 0 40px #ff4444,
+      0 0 70px #ff4444;
+    color: #ff4444; /* For text elements affected by this */
+    text-shadow:
+      0 0 5px #ff4444,
+      0 0 10px #ff4444,
+      0 0 20px #ff4444;
+  }
+  50% {
+    box-shadow:
+      0 0 5px #ff0000, /* More intense red at peak */
+      0 0 20px #ff0000,
+      0 0 50px #ff0000,
+      0 0 100px #ff0000; /* Larger, more aggressive glow */
+    color: #ff0000; /* More intense red for text */
+    text-shadow:
+      0 0 10px #ff0000,
+      0 0 25px #ff0000,
+      0 0 40px #ff0000;
+  }
+}
+
+
+/* SCANLINE ANIMATION */
+@keyframes scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: black;
+  font-family: 'Courier New', Courier, monospace;
+  color: #00ff00; /* Default green */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* MATRIX RAIN OVERLAY - Only for default/login state */
+body:not(.denied-body)::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 255, 0, 0.05) 0,
+      rgba(0, 255, 0, 0.12) 1px,
+      transparent 2px
+    ),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><text y="10" font-family="Courier New" font-size="10" fill="lime">01</text></svg>');
+  background-repeat: repeat;
+  background-size: 20px 20px;
+  animation: digitalRain 9s linear infinite;
+  filter: drop-shadow(0 0 6px #00ff00);
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.12;
+}
+
+/* SCANLINES OVERLAY for CRT effect - Only for default/login state */
+body:not(.denied-body)::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,0,0.04) 0,
+    rgba(0,255,0,0.04) 1px,
+    transparent 2px
+  );
+  background-size: 100% 3px;
+  animation: scanline 4s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TERMINAL FRAME (LOGIN STATE) */
+.terminal-box {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #00ff00;
+  width: 350px;
+  max-width: 90vw;
+  padding: 2.5rem 3rem 3rem 3rem;
+  text-align: center;
+  box-shadow:
+    0 0 15px #00ff00,
+    0 0 40px #00ff00,
+    0 0 70px #00ff00;
+  border-radius: 8px;
+  letter-spacing: 0.07em;
+  font-weight: 700;
+  user-select: none;
+  font-family: 'Courier New', Courier, monospace;
+  animation: flicker 3s infinite;
+}
+
+/* PROMPT BEFORE TERMINAL BOX CONTENT */
+.terminal-box::before {
+  content: '> ';
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  color: #00ff00;
+  text-shadow:
+    0 0 10px #00ff00,
+    0 0 20px #00ff00,
+    0 0 30px #00ff00;
+  font-size: 1.3rem;
+  font-weight: 900;
+  font-family: 'Courier New', Courier, monospace;
+  animation: blink 1.2s steps(2, start) infinite;
+}
+
+/* INPUT */
+input {
+  width: 100%;
+  margin: 12px 0 0 0;
+  padding: 14px 18px;
+  background: transparent;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  font-family: inherit;
+  font-size: 1.2rem;
+  letter-spacing: 0.08em;
+  border-radius: 5px;
+  box-shadow:
+    0 0 8px #00ff00,
+    0 0 20px #00ff00;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input:focus {
+  border-color: #0f0;
+  box-shadow:
+    0 0 20px #00ff00,
+    0 0 45px #0f0;
+  background: rgba(0, 255, 0, 0.08);
+}
+
+/* BUTTON */
+button {
+  padding: 12px 28px;
+  margin-top: 1.5rem;
+  background: #000;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 6px;
+  box-shadow:
+    0 0 12px #00ff00,
+    0 0 35px #00ff00;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+button:hover {
+  background-color: #00ff00;
+  color: black;
+  box-shadow:
+    0 0 30px #00ff00,
+    0 0 60px #00ff00;
+  transform: scale(1.1);
+}
+
+/* SUCCESS STATE */
+.success-body {
+  background-color: black;
+  color: #00ff00;
+  text-shadow:
+    0 0 20px #00ff00,
+    0 0 30px #00ff00;
+}
+
+/* ACCESS DENIED STATE */
+.denied-body {
+  background-color: black; /* Keep black for consistency with the screenshot */
+  color: #ff4444; /* Red text for denied state */
+  text-shadow: none; /* No general text shadow for the body */
+  /* Remove matrix rain and scanlines by overriding */
+  &::before, &::after {
+    display: none !important;
+  }
+}
+
+/* Specific styling for the terminal box in denied state */
+.denied-body .terminal-box {
+  background: transparent; /* As per screenshot, the background is transparent */
+  border: 2px solid #ff4444; /* Red border */
+  /* Apply sirenPulse animation to the box-shadow and color */
+  animation: sirenPulse 1.5s linear infinite; /* Increased frequency for siren feel */
+  width: 500px; /* Wider to match screenshot */
+  max-width: 90vw;
+  padding: 2rem 2.5rem; /* Adjusted padding to match screenshot */
+  text-align: left; /* Align text to left as in screenshot */
+  font-weight: normal; /* Less bold than login state */
+  letter-spacing: 0.05em;
+  line-height: 1.6; /* More spacing between lines */
+}
+
+/* Remove prompt from denied terminal box */
+.denied-body .terminal-box::before {
+  display: none;
+}
+
+/* Adjustments for text inside denied terminal box */
+.denied-body .terminal-box p {
+  margin: 0.5rem 0;
+  color: #ff4444; /* Ensure text is red by default */
+  /* Text glow will be handled by the sirenPulse animation on the parent */
+  text-shadow: none; /* Removed individual text shadow to allow sirenPulse to control it */
+}
+
+/* Specific style for "ACCESS DENIED - INTRUSION DETECTED" */
+.denied-body .terminal-box .denied-title {
+  display: block; /* Make it a block element to control spacing */
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #ff4444; /* Default color, sirenPulse will animate it */
+  /* Text glow will be handled by the sirenPulse animation on the parent */
+  text-shadow: none; /* Removed individual text shadow */
+  animation: blink 1.2s steps(2, start) infinite; /* Blinking effect */
+}
+
+/* Top Warning Banner */
+.warning-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: transparent; /* No solid background, just text */
+  color: #ff4444; /* Default color, sirenPulse will animate it */
+  padding: 15px 0;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
+  /* Text glow will be handled by the sirenPulse animation on the parent */
+  text-shadow: none; /* Removed individual text shadow */
+  z-index: 2; /* Above everything else */
+  letter-spacing: 0.1em;
+  animation: sirenPulse 1.5s linear infinite; /* Apply sirenPulse to the banner */
+}
+
+
+/* NEON GLOW CLASSES */
+.red-glow {
+  border-color: #ff4444 !important;
+  box-shadow: 0 0 20px #ff4444 !important;
+}
+
+.green-glow {
+  border-color: #00ff00 !important;
+  box-shadow: 0 0 20px #00ff00 !important;
+}
+
+/* BLINKING CLASS */
+.blink {
+  animation: blink 1.2s steps(2, start) infinite;
+}

@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Log Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #0f0;
+      padding: 20px;
+    }
+    h1 {
+      color: #0f0;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background-color: #222;
+    }
+    th, td {
+      border: 1px solid #0f0;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #0f0;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Suspicious Login Logs</h1>
+  <table id="logsTable">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Reason</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch('/logs')
+      .then(res => res.json())
+      .then(data => {
+        const tableBody = document.querySelector("#logsTable tbody");
+        data.forEach(log => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${log.username}</td>
+            <td>${log.reason}</td>
+            <td>${log.time}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(err => {
+        console.error("Failed to load logs:", err);
+      });
+  </script>
+</body>
+</html>

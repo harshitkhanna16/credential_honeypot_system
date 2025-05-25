@@ -6,9 +6,9 @@ A security-focused honeypot system designed to simulate a login portal, capture 
 
 - A Login page.
 - If correct actual credentials ---> Go to Success Page.
-- If credentials are wrong 3 times ---> Redirect to Access Denied Page + log attacker details  and send Alert on Mail.
--If login happens at odd hours (like after 12:00 AM or customizable hours) ---> Redirect to Access Denied Page + log attacker details  and send Alert on Mail.
-- If correct planted credentials ---> Redirect to Access Denied Page + log attacker details  and send Alert on Mail.
+- If credentials are wrong 3 times ---> Redirect to Access Denied Page + log attacker details + send Alert on Mail and update in Database.
+-If login happens at odd hours (like after 12:00 AM or customizable hours) ---> Redirect to Access Denied Page + log attacker details + send Alert on Mail and update in Database.
+- If correct planted credentials ---> Redirect to Access Denied Page + log attacker details + send Alert on Mail and update in Database.
 
 ## Features
 - Fake login system with realistic UI
@@ -18,12 +18,14 @@ A security-focused honeypot system designed to simulate a login portal, capture 
 - Blocks access during odd hours
 - Detects planted (fake) credentials
 - Redirects users after suspicious activity
+- Add details like fake access username, reason, date, time on database.
 
 ## Technologies Used
 - Node.js
 - Express.js
 - Nodemailer (for email alerts)
-- HTML, CSS, JavaScript (Frontend
+- HTML, CSS, JavaScript (Frontend)
+- MongoDB
 
 ## Project Structure
 credential_honeypot_system/
@@ -34,9 +36,7 @@ credential_honeypot_system/
 └── README.md # Project documentation
 
 ## To Do-
-- Implement IP address detection and logging  
-- Add IP blocking feature after repeated failures  
-- Enhance UI/UX for a more convincing honeypot
+- Add IP blocking feature after repeated failures
 
   ## Author-
   Developed by **Harshit Khanna**, **Divyanshu Sharma**, and **Kshitij Bansal**

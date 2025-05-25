@@ -1,29 +1,45 @@
+// server.js
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
 const path = require('path');
 
 const app = express();
-app.use(bodyParser.json());
+const PORT = 3000;
 
-// Serve static files from the "public" folder
+// Middleware
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve index.html when user visits "/"
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/loginLogs', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+// Schema and Model
+const logSchema = new mongoose.Schema({
+  username: String,
+  reason: String,
+  time: String
+});
+const Log = mongoose.model('Log', logSchema);
+
+// Email transporter setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'cyberivt064@gmail.com',
+    pass: 'rsos wjpt erzm jjlb'     // replace with your Gmail App Password
+  }
 });
 
-app.post('/send-alert', (req, res) => {
+// Routes
+app.post('/send-alert', async (req, res) => {
   const { reason, username, time } = req.body;
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'cyberivt064@gmail.com',
-      pass: 'nzhi koth ofan mscm'
-    }
-  });
 
   const mailOptions = {
     from: 'cyberivt064@gmail.com',
@@ -32,18 +48,31 @@ app.post('/send-alert', (req, res) => {
     text: `Reason: ${reason}\nUsername: ${username}\nTime: ${time}`
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Email send failed:', error);
-      res.status(500).send('Email failed');
-    } else {
-      console.log('Email sent:', info.response);
-      res.status(200).send('Email sent');
-    }
-  });
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Alert email sent');
+
+    const newLog = new Log({ username, reason, time });
+    await newLog.save();
+
+    res.status(200).send('Alert sent and logged');
+  } catch (error) {
+    console.error('Failed to send alert or save log:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
-const PORT = 3000;
+app.get('/logs', async (req, res) => {
+  try {
+    const logs = await Log.find().sort({ time: -1 });
+    res.json(logs);
+  } catch (err) {
+    console.error("Failed to fetch logs:", err);
+    res.status(500).send("Error fetching logs");
+  }
+});
+
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
